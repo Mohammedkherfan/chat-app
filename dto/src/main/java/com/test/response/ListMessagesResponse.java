@@ -1,18 +1,18 @@
 package com.test.response;
 
+import com.test.dto.MessageDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetRoomResponse {
+public class ListMessagesResponse {
 
-    private String roomExternalId;
-    private String chatId;
-    private String senderId;
-    private String receiverId;
+    private List<MessageDto> messages;
 }
