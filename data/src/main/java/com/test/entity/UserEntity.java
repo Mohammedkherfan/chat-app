@@ -18,6 +18,7 @@ public class UserEntity {
 
     @Id
     private Long id;
+    private String userExternalId;
     private String username;
     private String fullName;
     private Status status;

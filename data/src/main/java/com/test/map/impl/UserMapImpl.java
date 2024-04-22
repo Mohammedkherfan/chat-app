@@ -1,4 +1,4 @@
-package com.test.map.implement;
+package com.test.map.impl;
 
 import com.test.bo.UserBo;
 import com.test.entity.UserEntity;

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,12 +33,14 @@ public class UserServiceImpl implements UserService {
         if (isExist)
             throw new ChatAppException("Username already used");
         UserBo userBo = userRepository.save(UserBo.builder()
+                .userExternalId(UUID.randomUUID().toString())
                 .username(request.getUsername())
                 .fullName(request.getFullName())
                 .status(Status.ACTIVE)
                 .chatStatus(ChatStatus.OFFLINE)
                 .build());
         return AddUserResponse.builder()
+                .userExternalId(userBo.getUserExternalId())
                 .username(userBo.getUsername())
                 .fullName(userBo.getFullName())
                 .status(userBo.getStatus())
@@ -53,6 +56,7 @@ public class UserServiceImpl implements UserService {
         userBo.get().setChatStatus(ChatStatus.OFFLINE);
         userRepository.save(userBo.get());
         return DisconnectUserResponse.builder()
+                .userExternalId(userBo.get().getUserExternalId())
                 .username(userBo.get().getUsername())
                 .fullName(userBo.get().getFullName())
                 .status(userBo.get().getStatus())
@@ -63,6 +67,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ListUsersResponse findConnectedUsers() {
         List<UserDto> users = userRepository.findAllByChatStatus(ChatStatus.ONlINE).stream().map(bo -> UserDto.builder()
+                .userExternalId(bo.getUserExternalId())
                 .username(bo.getUsername())
                 .fullName(bo.getFullName())
                 .status(bo.getStatus())

@@ -42,6 +42,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<UserBo> findAllByChatStatus(ChatStatus chatStatus) {
-        return repository.findAllByChatStatus(chatStatus);
+        return repository.findAllByChatStatus(chatStatus).stream().map(entity -> map.toBo(entity)).toList();
     }
 }

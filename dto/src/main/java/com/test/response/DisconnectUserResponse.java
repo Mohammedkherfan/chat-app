@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DisconnectUserResponse {
 
+    private String userExternalId;
     private String username;
     private String fullName;
     private Status status;

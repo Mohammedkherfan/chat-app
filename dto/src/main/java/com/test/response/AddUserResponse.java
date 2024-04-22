@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AddUserResponse {
 
+    private String userExternalId;
     private String username;
     private String fullName;
     private Status status;

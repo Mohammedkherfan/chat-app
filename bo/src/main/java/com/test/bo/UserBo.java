@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class UserBo {
 
     private Long id;
+    private String userExternalId;
     private String username;
     private String fullName;
     private Status status;
