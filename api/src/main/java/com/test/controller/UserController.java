@@ -15,6 +15,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -28,24 +30,53 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * Sign up users
+     * @param request
+     * @return
+     */
     @MessageMapping("/user.addUser")
     @SendTo("/user/public")
     public AddUserResponse addUser(@Payload AddUserRequest request) {
         return userService.addUser(request);
     }
 
+    /**
+     * Sign in users
+     * @param request
+     * @return
+     */
     @MessageMapping("/user.login")
     @SendTo("/user/login/public")
-    public LoginUserResponse login(@Payload LoginUserRequest request) {
-        return userService.login(request);
+    public LoginUserResponse assUserToSocket(@Payload LoginUserRequest request) {
+        return userService.assUserToSocket(request);
     }
 
+    /**
+     * Sign in users
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/user/signin")
+    public ResponseEntity<LoginUserResponse> login(@RequestBody LoginUserRequest request) {
+        return ResponseEntity.ok(userService.login(request));
+    }
+
+    /**
+     * Sign out user
+     * @param request
+     * @return
+     */
     @MessageMapping("/user.disconnectUser")
     @SendTo("/user/public")
     public DisconnectUserResponse disconnectUser(@Payload DisconnectUserRequest request) {
         return userService.disconnectUser(request);
     }
 
+    /**
+     * List online users
+     * @return
+     */
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> findConnectedUsers() {
         return ResponseEntity.ok(userService.findConnectedUsers().getUsers());

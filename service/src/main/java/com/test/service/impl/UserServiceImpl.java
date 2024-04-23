@@ -77,13 +77,30 @@ public class UserServiceImpl implements UserService {
         Optional<UserBo> userBo = userRepository.findByNickName(decoded[0]);
         if (userBo.isEmpty())
             throw new ChatAppException("UnAuthorized");
-        if (decoded[1].equals(userBo.get().getPassword()))
+        if (decoded[1].equals(userBo.get().getPassword())) {
+            userBo.get().setStatus(Status.ONLINE);
+            userRepository.save(userBo.get());
             return LoginUserResponse.builder()
                     .nickName(userBo.get().getNickName())
                     .fullName(userBo.get().getFullName())
                     .status(userBo.get().getStatus())
                     .build();
+        }
         throw new ChatAppException("UnAuthorized");
+    }
+
+    @Override
+    public LoginUserResponse assUserToSocket(LoginUserRequest request) {
+        String[] decoded = decode(request.getToken());
+        Optional<UserBo> userBo = userRepository.findByNickName(decoded[0]);
+        if (userBo.isEmpty())
+            throw new ChatAppException("User not found");
+        userBo.get().setStatus(Status.ONLINE);
+        return LoginUserResponse.builder()
+                .nickName(userBo.get().getNickName())
+                .fullName(userBo.get().getFullName())
+                .status(userBo.get().getStatus())
+                .build();
     }
 
     private String[] decode(String userToken) {

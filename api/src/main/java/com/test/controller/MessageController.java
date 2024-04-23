@@ -28,12 +28,22 @@ public class MessageController {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
+    /**
+     * Get API to list all messages between sender and recipient
+     * @param senderId
+     * @param recipientId
+     * @return
+     */
     @GetMapping("/messages")
     public ResponseEntity<List<MessageDto>> list(@RequestParam("senderId") String senderId,
                                                  @RequestParam("recipientId") String recipientId) {
         return ResponseEntity.ok(messageService.list(senderId, recipientId).getMessages());
     }
 
+    /**
+     * Socket method to send message
+     * @param request
+     */
     @MessageMapping("/chat")
     public void push(@Payload PushMessageRequest request) {
         PushMessageResponse pushMessageResponse = messageService.push(request);

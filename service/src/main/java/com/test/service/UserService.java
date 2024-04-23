@@ -17,4 +17,6 @@ public interface UserService {
     ListUsersResponse findConnectedUsers();
 
     LoginUserResponse login(LoginUserRequest request);
+
+    LoginUserResponse assUserToSocket(LoginUserRequest request);
 }

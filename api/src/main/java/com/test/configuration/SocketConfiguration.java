@@ -13,10 +13,17 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 import java.util.List;
 
+/**
+ * Web socket configuration class
+ */
 @Configuration
 @EnableWebSocketMessageBroker
 public class SocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
+    /**
+     * broker configuration
+     * @param registry
+     */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableSimpleBroker("/user");
@@ -24,11 +31,19 @@ public class SocketConfiguration implements WebSocketMessageBrokerConfigurer {
         registry.setUserDestinationPrefix("/user");
     }
 
+    /**
+     * socket endpoint configuration
+     * @param registry
+     */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws").withSockJS();
     }
 
+    /**
+     * message type configuration
+     * @param messageConverters
+     */
     @Override
     public boolean configureMessageConverters(List<MessageConverter> messageConverters) {
         DefaultContentTypeResolver defaultContentTypeResolver = new DefaultContentTypeResolver();
