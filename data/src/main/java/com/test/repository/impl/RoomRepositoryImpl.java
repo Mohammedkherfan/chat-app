@@ -20,8 +20,8 @@ public class RoomRepositoryImpl implements RoomRepository {
     private RoomMap map;
 
     @Override
-    public Optional<RoomBo> findBySenderIdAndReceiverId(String senderId, String receiverId) {
-        RoomEntity entity = repository.findBySenderIdAndReceiverId(senderId, receiverId);
+    public Optional<RoomBo> findBySenderIdAndRecipientId(String senderId, String recipientId) {
+        RoomEntity entity = repository.findBySenderIdAndRecipientId(senderId, recipientId);
         if (Objects.isNull(entity))
             return Optional.empty();
         else

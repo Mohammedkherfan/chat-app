@@ -5,15 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PushNotificationRequest {
+public class LoginUserRequest {
 
-    private String id;
-    private String senderId;
-    private String recipientId;
-    private String content;
+    private String token;
 }

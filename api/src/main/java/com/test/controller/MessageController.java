@@ -1,49 +1,50 @@
 package com.test.controller;
 
+import com.test.bo.NotificationBo;
+import com.test.dto.MessageDto;
 import com.test.request.PushMessageRequest;
-import com.test.request.PushNotificationRequest;
-import com.test.response.ListMessagesResponse;
 import com.test.response.PushMessageResponse;
 import com.test.service.MessageService;
-import com.test.service.NotificationService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class MessageController {
 
     private final MessageService messageService;
-    private final NotificationService notificationService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     @Autowired
-    public MessageController(MessageService messageService, NotificationService notificationService) {
+    public MessageController(MessageService messageService, SimpMessagingTemplate simpMessagingTemplate) {
         this.messageService = messageService;
-        this.notificationService = notificationService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
-    @GetMapping("/message")
-    public ListMessagesResponse list(@RequestParam("senderId") @Valid @NotBlank(message = "Invalid sender id") String senderId,
-                                     @RequestParam("receiverId") @Valid @NotBlank(message = "Invalid receiver id") String receiverId) {
-        return messageService.list(senderId, receiverId);
+    @GetMapping("/messages")
+    public ResponseEntity<List<MessageDto>> list(@RequestParam("senderId") String senderId,
+                                                 @RequestParam("recipientId") String recipientId) {
+        return ResponseEntity.ok(messageService.list(senderId, recipientId).getMessages());
     }
 
-    @MessageMapping("/message")
-    public PushMessageResponse push(@Payload @Valid PushMessageRequest request) {
+    @MessageMapping("/chat")
+    public void push(@Payload PushMessageRequest request) {
         PushMessageResponse pushMessageResponse = messageService.push(request);
-        notificationService.notifyReceiver(PushNotificationRequest.builder()
-                .senderId(pushMessageResponse.getSenderId())
-                .receiverId(pushMessageResponse.getReceiverId())
-                .body(pushMessageResponse.getBody())
-                .messageExternalId(pushMessageResponse.getMessageExternalId())
-                .build());
-        return pushMessageResponse;
+        simpMessagingTemplate.convertAndSendToUser(
+                request.getRecipientId(), "/queue/messages",
+                new NotificationBo(
+                        pushMessageResponse.getId(),
+                        pushMessageResponse.getSenderId(),
+                        pushMessageResponse.getRecipientId(),
+                        pushMessageResponse.getContent()
+                )
+        );
     }
 }

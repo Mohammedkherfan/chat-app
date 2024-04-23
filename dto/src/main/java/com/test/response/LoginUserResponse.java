@@ -1,4 +1,4 @@
-package com.test.request;
+package com.test.response;
 
 import com.test.enums.Status;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DisconnectUserRequest {
+public class LoginUserResponse {
 
     private String nickName;
     private String fullName;

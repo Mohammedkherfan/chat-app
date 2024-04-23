@@ -1,23 +1,23 @@
 package com.test.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@NotNull(message = "Invalid request")
 public class PushMessageRequest {
 
-    @NotBlank(message = "Invalid sender id")
+    private String id;
+    private String chatId;
     private String senderId;
-    @NotBlank(message = "Invalid receiver id")
-    private String receiverId;
-    @NotBlank(message = "Invalid body")
-    private String body;
+    private String recipientId;
+    private String content;
+    private Date timestamp;
+
 }

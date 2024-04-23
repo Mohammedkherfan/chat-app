@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RoomBo {
 
-    private Long id;
-    private String roomExternalId;
+    private String id;
     private String chatId;
     private String senderId;
-    private String receiverId;
+    private String recipientId;
 }

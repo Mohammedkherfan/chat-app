@@ -1,6 +1,5 @@
 package com.test.entity;
 
-import com.test.enums.ChatStatus;
 import com.test.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,10 +16,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class UserEntity {
 
     @Id
-    private Long id;
-    private String userExternalId;
-    private String username;
+    private String nickName;
     private String fullName;
     private Status status;
-    private ChatStatus chatStatus;
+    private String password;
 }

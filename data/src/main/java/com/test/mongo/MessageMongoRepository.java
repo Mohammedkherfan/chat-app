@@ -1,6 +1,5 @@
 package com.test.mongo;
 
-import com.test.bo.MessageBo;
 import com.test.entity.MessageEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

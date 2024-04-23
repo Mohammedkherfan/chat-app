@@ -1,7 +1,6 @@
 package com.test.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import com.test.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,11 +10,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@NotNull(message = "Invalid request")
 public class AddUserRequest {
 
-    @NotBlank(message = "Invalid username")
-    private String username;
-    @NotBlank(message = "Invalid full name")
+    private String nickName;
     private String fullName;
+    private Status status;
+    private String password;
 }

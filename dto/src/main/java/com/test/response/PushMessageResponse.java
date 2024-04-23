@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Builder
@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PushMessageResponse {
 
-    private String messageExternalId;
+    private String id;
     private String chatId;
     private String senderId;
-    private String receiverId;
-    private String body;
-    private LocalDateTime dateTime;
+    private String recipientId;
+    private String content;
+    private Date timestamp;
 }

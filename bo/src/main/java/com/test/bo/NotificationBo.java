@@ -13,6 +13,6 @@ public class NotificationBo {
 
     private String id;
     private String senderId;
-    private String receiverId;
-    private String body;
+    private String recipientId;
+    private String content;
 }

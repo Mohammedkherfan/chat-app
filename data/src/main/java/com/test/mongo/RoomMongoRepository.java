@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoomMongoRepository extends MongoRepository<RoomEntity, Long> {
 
-    RoomEntity findBySenderIdAndReceiverId(String senderId, String receiverId);
+    RoomEntity findBySenderIdAndRecipientId(String senderId, String recipientId);
 }

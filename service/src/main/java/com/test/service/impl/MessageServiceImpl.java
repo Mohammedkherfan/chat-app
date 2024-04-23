@@ -12,7 +12,6 @@ import com.test.response.PushMessageResponse;
 import com.test.service.MessageService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,37 +29,37 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public PushMessageResponse push(PushMessageRequest request) {
-        RoomBo roomBo = getRoom(request.getSenderId(), request.getReceiverId());
+        RoomBo roomBo = getRoom(request.getSenderId(), request.getRecipientId());
         MessageBo messageBo = messageRepository.save(MessageBo.builder()
-                .messageExternalId(UUID.randomUUID().toString())
+                .id(request.getId())
                 .chatId(roomBo.getChatId())
                 .senderId(request.getSenderId())
-                .receiverId(request.getReceiverId())
-                .body(request.getBody())
-                .dateTime(LocalDateTime.now())
+                .recipientId(request.getRecipientId())
+                .content(request.getContent())
+                .timestamp(request.getTimestamp())
                 .build());
         return PushMessageResponse.builder()
-                .messageExternalId(messageBo.getMessageExternalId())
+                .id(messageBo.getId())
                 .chatId(messageBo.getChatId())
                 .senderId(messageBo.getSenderId())
-                .receiverId(messageBo.getReceiverId())
-                .body(messageBo.getBody())
-                .dateTime(messageBo.getDateTime())
+                .recipientId(messageBo.getRecipientId())
+                .content(messageBo.getContent())
+                .timestamp(messageBo.getTimestamp())
                 .build();
     }
 
     @Override
-    public ListMessagesResponse list(String senderId, String receiverId) {
-        Optional<RoomBo> roomBo = roomRepository.findBySenderIdAndReceiverId(senderId, receiverId);
+    public ListMessagesResponse list(String senderId, String recipientId) {
+        Optional<RoomBo> roomBo = roomRepository.findBySenderIdAndRecipientId(senderId, recipientId);
         if (roomBo.isEmpty())
             throw new ChatAppException("Invalid room");
         List<MessageDto> messages = messageRepository.findAllByChatId(roomBo.get().getChatId()).stream().map(bo -> MessageDto.builder()
-                .messageExternalId(bo.getMessageExternalId())
+                .id(bo.getId())
                 .chatId(bo.getChatId())
                 .senderId(bo.getSenderId())
-                .receiverId(bo.getReceiverId())
-                .body(bo.getBody())
-                .dateTime(bo.getDateTime())
+                .recipientId(bo.getRecipientId())
+                .content(bo.getContent())
+                .timestamp(bo.getTimestamp())
                 .build())
                 .toList();
         return ListMessagesResponse.builder()
@@ -68,34 +67,30 @@ public class MessageServiceImpl implements MessageService {
                 .build();
     }
 
-    private RoomBo getRoom(String senderId, String receiverId) {
-        Optional<RoomBo> roomBo = roomRepository.findBySenderIdAndReceiverId(senderId, receiverId);
+    private RoomBo getRoom(String senderId, String recipientId) {
+        Optional<RoomBo> roomBo = roomRepository.findBySenderIdAndRecipientId(senderId, recipientId);
         if (roomBo.isPresent())
             return roomBo.get();
         else
-            return initiateRoom(senderId, receiverId);
+            return initiateRoom(senderId, recipientId);
     }
 
-    private RoomBo initiateRoom(String senderId, String receiverId) {
-        String roomExternalId = UUID.randomUUID().toString();
+    private RoomBo initiateRoom(String senderId, String recipientId) {
         String chatId = UUID.randomUUID().toString();
         roomRepository.save(RoomBo.builder()
-                .roomExternalId(roomExternalId)
                 .chatId(chatId)
                 .senderId(senderId)
-                .receiverId(receiverId)
+                .recipientId(recipientId)
                 .build());
         roomRepository.save(RoomBo.builder()
-                .roomExternalId(roomExternalId)
                 .chatId(chatId)
-                .senderId(receiverId)
-                .receiverId(senderId)
+                .senderId(recipientId)
+                .recipientId(senderId)
                 .build());
         return RoomBo.builder()
-                .roomExternalId(roomExternalId)
                 .chatId(chatId)
                 .senderId(senderId)
-                .receiverId(receiverId)
+                .recipientId(recipientId)
                 .build();
     }
 }

@@ -8,5 +8,5 @@ public interface MessageService {
 
     PushMessageResponse push(PushMessageRequest request);
 
-    ListMessagesResponse list(String senderId, String receiverId);
+    ListMessagesResponse list(String senderId, String recipientId);
 }

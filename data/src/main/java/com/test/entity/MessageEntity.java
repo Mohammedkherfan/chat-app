@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Builder
@@ -17,11 +17,10 @@ import java.time.LocalDateTime;
 public class MessageEntity {
 
     @Id
-    private Long id;
-    private String messageExternalId;
+    private String id;
     private String chatId;
     private String senderId;
-    private String receiverId;
-    private String body;
-    private LocalDateTime dateTime;
+    private String recipientId;
+    private String content;
+    private Date timestamp;
 }

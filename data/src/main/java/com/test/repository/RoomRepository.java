@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface RoomRepository {
 
-    Optional<RoomBo> findBySenderIdAndReceiverId(String senderId, String receiverId);
+    Optional<RoomBo> findBySenderIdAndRecipientId(String senderId, String recipientId);
 
     RoomBo save(RoomBo roomBo);
 }

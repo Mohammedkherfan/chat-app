@@ -2,7 +2,7 @@ package com.test.repository.impl;
 
 import com.test.bo.UserBo;
 import com.test.entity.UserEntity;
-import com.test.enums.ChatStatus;
+import com.test.enums.Status;
 import com.test.map.UserMap;
 import com.test.mongo.UserMongoRepository;
 import com.test.repository.UserRepository;
@@ -27,21 +27,20 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Boolean existsByUsername(String username) {
-        return repository.existsByUsername(username);
+    public Boolean existsByNickName(String nickName) {
+        return repository.existsByNickName(nickName);
     }
 
     @Override
-    public Optional<UserBo> findByUsername(String username) {
-        UserEntity entity = repository.findByUsername(username);
+    public Optional<UserBo> findByNickName(String nickName) {
+        UserEntity entity = repository.findByNickName(nickName);
         if (Objects.isNull(entity))
             return Optional.empty();
         else
             return Optional.of(map.toBo(entity));
     }
 
-    @Override
-    public List<UserBo> findAllByChatStatus(ChatStatus chatStatus) {
-        return repository.findAllByChatStatus(chatStatus).stream().map(entity -> map.toBo(entity)).toList();
+    public List<UserBo> findAllByStatus(Status status) {
+        return repository.findAllByStatus(status).stream().map(entity -> map.toBo(entity)).toList();
     }
 }

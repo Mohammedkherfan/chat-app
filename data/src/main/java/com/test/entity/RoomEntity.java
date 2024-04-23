@@ -15,9 +15,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class RoomEntity {
 
     @Id
-    private Long id;
-    private String roomExternalId;
+    private String id;
     private String chatId;
     private String senderId;
-    private String receiverId;
+    private String recipientId;
 }
