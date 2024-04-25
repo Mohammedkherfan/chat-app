@@ -20,3 +20,13 @@
 
 # TDD
 There is TDD as unit test on service model 
+
+# Jenkins File "jenkins file"
+To explain CI/CD steps
+
+# jenkins.yml
+CI/CD configuration file
+
+Please read server scalability file.
+
+Thank you
